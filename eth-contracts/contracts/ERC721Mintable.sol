@@ -8,43 +8,71 @@ import "./Oraclize.sol";
 
 
 contract Ownable {
-    /////////////////////////////////// VARIABLES
     // set visibility of owner as public to avoid defining redundantly a public getter
-    uint public owner;
+    address public owner;
+    event OwnershipTransferred(address newOwner);
 
-
-    //////////////////////////////////// EVENTS
-    event TransferOwnership(address newOwner);
-    /////////////////////////////////// MODIFIERS
     modifier onlyOwner {
         require(msg.sender == owner, "Only owner can call this function");
         _;
     }
-    /////////////////////////////////// CONSTRUCTOR
+
     constructor() public {
         // set creator of contract as owner
         owner = msg.sender;
-        emit TransferOwnership(msg.sender);
+        emit OwnershipTransferred(msg.sender);
     }
-    /////////////////////////////////// UTILS FUNCTIONS
 
-    /////////////////////////////////// CONTRACT FUNCTIONS
-
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public onlyOwner
+    {
         // make sure the new owner is a real address
         require(newOwner != address(0), "Invalid new owner address");
         owner = newOwner;
-        emit TransferOwnership(newOwner);
-
+        emit OwnershipTransferred(newOwner);
     }
 }
 
-//  TODO's: Create a Pausable contract that inherits from the Ownable contract
-//  1) create a private '_paused' variable of type bool
-//  2) create a public setter using the inherited onlyOwner modifier
-//  3) create an internal constructor that sets the _paused variable to false
-//  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
-//  5) create a Paused & Unpaused event that emits the address that triggered the event
+
+contract Pausable is Ownable {
+    bool private _paused;
+
+    event Paused();
+    event Unpaused();
+
+    modifier whenNotPaused {
+        require(!_paused, "Contract is paused");
+        _;
+    }
+
+    modifier paused {
+        require(_paused, "Contract is not paused");
+        _;
+    }
+
+    constructor() public {
+        _paused = false;
+    }
+
+    function pause()
+    public
+    onlyOwner
+    whenNotPaused
+    {
+        _paused = true;
+        emit Paused();
+    }
+
+    function unpause()
+    public
+    onlyOwner
+    paused
+    {
+        _paused = false;
+        emit Unpaused();
+    }
+
+}
+
 
 contract ERC165 {
     bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
@@ -82,6 +110,7 @@ contract ERC165 {
     }
 }
 
+
 contract ERC721 is Pausable, ERC165 {
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
@@ -104,10 +133,12 @@ contract ERC721 is Pausable, ERC165 {
     // Mapping from token ID to approved address
     mapping (uint256 => address) private _tokenApprovals;
 
-    // Mapping from owner to number of owned token
-    // IMPORTANT: this mapping uses Counters lib which is used to protect overflow when incrementing/decrementing a uint
-    // use the following functions when interacting with Counters: increment(), decrement(), and current() to get the value
-    // see: https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/drafts/Counters.sol
+    /*
+    Mapping from owner to number of owned token
+    IMPORTANT: this mapping uses Counters lib which is used to protect overflow when incrementing/decrementing a uint
+    use the following functions when interacting with Counters: increment(), decrement(), and current() to get the value
+    see: https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/drafts/Counters.sol
+    */
     mapping (address => Counters.Counter) private _ownedTokensCount;
 
     // Mapping from owner to operator approvals
@@ -120,30 +151,37 @@ contract ERC721 is Pausable, ERC165 {
         _registerInterface(_INTERFACE_ID_ERC721);
     }
 
-    function balanceOf(address owner) public view returns (uint256) {
-        // TODO return the token balance of given address
-        // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
+    // Returns the token balance of given address
+    function balanceOf(address owner) public view returns (uint256 balance) {
+        balance = _ownedTokensCount[owner].current();
     }
 
-    function ownerOf(uint256 tokenId) public view returns (address) {
-        // TODO return the owner of the given tokenId
+    // Returns the owner of the given tokenId
+    function ownerOf(uint256 tokenId) public view returns (address owner)
+    {
+        owner = _tokenOwner[tokenId];
     }
 
-//    @dev Approves another address to transfer the given token ID
-    function approve(address to, uint256 tokenId) public {
+    //    @dev Approves another address to transfer the given token ID
+    function approve(address to, uint256 tokenId) public
+    {
+        // require the given address to not be the owner of the tokenId
+        address tokenOwner = ownerOf(tokenId);
+        require(to != tokenOwner, "To address already owns this token");
+        // require the msg sender to be the owner of the token or isApprovedForAll() to be true
+        require(
+            msg.sender == tokenOwner || isApprovedForAll(tokenOwner, msg.sender),
+            "Only token owner or an approved operator can perform this action");
+        // add 'to' address to token approvals
+        _tokenApprovals[tokenId] = to;
 
-        // TODO require the given address to not be the owner of the tokenId
-
-        // TODO require the msg sender to be the owner of the contract or isApprovedForAll() to be true
-
-        // TODO add 'to' address to token approvals
-
-        // TODO emit Approval Event
-
+        emit Approval(ownerOf(tokenId), to, tokenId);
     }
 
-    function getApproved(uint256 tokenId) public view returns (address) {
-        // TODO return token approval if it exists
+    // Returns token approval
+    function getApproved(uint256 tokenId) public view returns (address approved)
+    {
+        approved = _tokenApprovals[tokenId];
     }
 
     /**
@@ -206,29 +244,33 @@ contract ERC721 is Pausable, ERC165 {
     }
 
     // @dev Internal function to mint a new token
-    // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
     function _mint(address to, uint256 tokenId) internal {
+        require(_exists(tokenId), "Token already exists");
+        require(to != address(0), "Address is invalid");
 
-        // TODO revert if given tokenId already exists or given address is invalid
-
-        // TODO mint tokenId to given address & increase token count of owner
-
-        // TODO emit Transfer event
+        // mint tokenId to given address
+        _tokenOwner[tokenId] = to;
+        // increase token count of owner
+        _ownedTokensCount[to].increment();
+        // emit Transfer event
+        emit Transfer(owner, to, tokenId);
     }
 
     // @dev Internal function to transfer ownership of a given token ID to another address.
-    // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
     function _transferFrom(address from, address to, uint256 tokenId) internal {
+        // require from address is the owner of the given token
+        require(from == ownerOf(tokenId), "Caller must be token owner");
+        // require token is being transfered to valid address
+        require(to != address(0), "To address not valid");
 
-        // TODO: require from address is the owner of the given token
+        // clear approval
+        _clearApproval(tokenId);
+        // update token counts & transfer ownership of the token ID
+        _ownedTokensCount[from].decrement();
+        _ownedTokensCount[to].increment();
+        _tokenOwner[tokenId] = to;
 
-        // TODO: require token is being transfered to valid address
-
-        // TODO: clear approval
-
-        // TODO: update token counts & transfer ownership of the token ID
-
-        // TODO: emit correct event
+        emit Transfer(from, to, tokenId);
     }
 
     /**
@@ -258,6 +300,7 @@ contract ERC721 is Pausable, ERC165 {
         }
     }
 }
+
 
 contract ERC721Enumerable is ERC165, ERC721 {
     // Mapping from owner to list of owned token IDs
@@ -430,6 +473,7 @@ contract ERC721Enumerable is ERC165, ERC721 {
         _allTokensIndex[tokenId] = 0;
     }
 }
+
 
 contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 
