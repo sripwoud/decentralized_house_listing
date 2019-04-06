@@ -37,7 +37,7 @@ contract SolnSquareVerifier is DecentralizedHousingToken {
         return keccak256(abi.encodePacked(a, a_p, b, b_p, c, c_p, h, k, input));
     }
 
-    // TODO Create a function to add the solutions to the array and emit the event
+    // function to add the solutions to the array and emit the event
     function addSolution(uint index, address solvedBy, bytes32 solutionHash) public
     {
         Solution memory solution = Solution(index, solvedBy);
