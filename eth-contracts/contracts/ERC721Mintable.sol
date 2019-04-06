@@ -522,7 +522,7 @@ contract DecentralizedHousingToken is ERC721Metadata("Decentralized Housing Toke
     returns(bool)
     {
         _mint(to, tokenId);
-        setTokenURI(tokenID);
+        setTokenURI(tokenId);
         return true;
     }
 }
