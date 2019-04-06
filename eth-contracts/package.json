@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "truffle": "^5.0.11",
     "truffle-assertions": "^0.8.0"
   }
 }
