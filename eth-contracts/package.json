@@ -1,0 +1,18 @@
+{
+  "name": "eth-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "truffle": "^5.0.11",
+    "truffle-assertions": "^0.8.0"
+  }
+}
