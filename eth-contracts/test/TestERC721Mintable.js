@@ -64,11 +64,19 @@ contract('TestERC721Mintable', accounts => {
     })
 
     it('should fail when minting when address is not contract owner', async function () {
-
+      try {
+        await this.contract.mint(accounts[1], 1, { from: accounts[1] })
+      } catch (error) {
+        assert(error.message.includes('Only owner'), 'Wrong revert message')
+      }
     })
 
     it('should return contract owner', async function () {
-
+      assert.equal(
+        await this.contract.owner(),
+        accounts[0],
+        'Wrong contract owner address'
+      )
     })
   })
 })
