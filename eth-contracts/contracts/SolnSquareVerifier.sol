@@ -1,7 +1,7 @@
 pragma solidity 0.5.2;
 
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
-import "../../zokrates/code/square/verifier.sol";
+import "./Verifier.sol";
 import "./ERC721Mintable.sol";
 
 contract SolnSquareVerifier is DecentralizedHousingToken {
