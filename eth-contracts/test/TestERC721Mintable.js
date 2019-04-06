@@ -1,47 +1,74 @@
-var ERC721MintableComplete = artifacts.require('ERC721MintableComplete');
+const ERC721MintableComplete = artifacts.require('DecentralizedHousingToken')
+const truffleAssert = require('truffle-assertions')
 
 contract('TestERC721Mintable', accounts => {
+  describe('Match ERC721 specifications', function () {
+    beforeEach(async function () {
+      this.contract = await ERC721MintableComplete.new({ from: accounts[0] })
+      // Mint multiple tokens
+      const tx = await this.contract.mint(accounts[1], 0)
+      await this.contract.mint(accounts[1], 1)
+      await this.contract.mint(accounts[1], 2)
+      await this.contract.mint(accounts[2], 3)
+      truffleAssert.eventEmitted(tx, 'Transfer', ev => {
+        return ev.from === accounts[0] &
+        ev.to === accounts[1] &
+        +ev.tokenId === 0
+      })
+    })
 
-    const account_one = accounts[0];
-    const account_two = accounts[1];
+    it('Can return total supply', async function () {
+      const totalSupply = await this.contract.totalSupply()
+      assert.equal(totalSupply, 4, 'Wrong total supply value')
+    })
 
-    describe('match erc721 spec', function () {
-        beforeEach(async function () { 
-            this.contract = await ERC721MintableComplete.new({from: account_one});
+    it('Can get token balance', async function () {
+      const balance = await this.contract.balanceOf(accounts[1])
+      assert.equal(balance, 3, 'Wrong token balance value')
+    })
 
-            // TODO: mint multiple tokens
-        })
+    // token uri should be complete i.e: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1
+    it('Can return token URI', async function () {
+      const uri = await this.contract.tokenURI(1)
+      assert.equal(
+        uri,
+        'https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1',
+      'Wrong token uri')
+    })
 
-        it('should return total supply', async function () { 
-            
-        })
+    it('Can transfer token from one owner to another', async function () {
+      const tx = await this.contract.transferFrom(
+        accounts[1],
+        accounts[2],
+        0,
+        { from: accounts[1] }
+      )
 
-        it('should get token balance', async function () { 
-            
-        })
+      assert.equal(
+        await this.contract.ownerOf(0),
+        accounts[2],
+        'Wrong new owner. Token was not transferred correctly'
+      )
 
-        // token uri should be complete i.e: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1
-        it('should return token uri', async function () { 
-            
-        })
+      truffleAssert.eventEmitted(tx, 'Transfer', ev => {
+        return ev.from === accounts[1] &
+        ev.to === accounts[2] &
+        +ev.tokenId === 0
+      })
+    })
+  })
 
-        it('should transfer token from one owner to another', async function () { 
-            
-        })
-    });
+  describe('Have ownership properties', function () {
+    beforeEach(async function () {
+      this.contract = await ERC721MintableComplete.new({ from: accounts[0] })
+    })
 
-    describe('have ownership properties', function () {
-        beforeEach(async function () { 
-            this.contract = await ERC721MintableComplete.new({from: account_one});
-        })
+    it('should fail when minting when address is not contract owner', async function () {
 
-        it('should fail when minting when address is not contract owner', async function () { 
-            
-        })
+    })
 
-        it('should return contract owner', async function () { 
-            
-        })
+    it('should return contract owner', async function () {
 
-    });
+    })
+  })
 })
