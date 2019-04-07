@@ -1,6 +1,47 @@
-# Udacity Blockchain Capstone
+# Decentralized Housing Service
+## Introduction
+### Issue
+At present, property titles are often paper-based, creating opportunities for errors and fraud. Title professionals find defects in 25% of all titles during the transaction process, according to the American Land Title Association.  
+Any identified defect makes it illegal to transfer a property title to a buyer until it is rectified. This means property owners often incur high legal fees to ensure authenticity and accuracy of their property titles.  
+Moreover, title fraud poses a risk to homeowners worldwide. US losses associated with title fraud reportedly averaged around $103,000 per case in 2015, compelling many property buyers to purchase title insurance.
+### Solution
+These title management issues could potentially be mitigated by using blockchain technology to build immutable digital records of land titles and using blockchain for transparent transactions. This approach could simplify property title management, making it more transparent and helping to reduce the risk of title fraud and the need for additional insurance.
+As a solution I developed a **Decentralized Housing Service** featuring:
+- Tokens ([ERC721 Standard](http://erc721.org/)) to represent the titles of properties
+- Zero Knowledge Proof of property's (token) ownership using the [ZoKrates](https://zokrates.github.io/introduction.html) toolbox for ZkSNARKS on Ethereum
+- Listing of properties on [OpenSea marketplace](https://opensea.io/)
 
-The capstone will build upon the knowledge you have gained in the course in order to build a decentralized housing product. 
+## Getting started
+1. Clone or download this repository
+1. `cd` to project folder
+2. Install dependencies
+```
+$ npm install
+$ cd eth-contracts
+$ npm install
+```
+3. Run tests:
+```
+$ truffle develop
+truffle(develop)> test
+```
+
+## Zokrates proofs generation
+**Prerequesite**: [Docker](https://docs.docker.com/install/)
+
+```
+$ docker run -v /path/to/project/root/directory/zokrates/code/:/home/zokrates/code -ti zokrates/zokrates /bin/bash
+zokrates@0xxxxxxxxxxxx:~$ cd code square
+zokrates@0xxxxxxxxxxxx:~$ ~/zokrates compile -i square.code
+zokrates@0xxxxxxxxxxxx:~$ ~/zokrates setup
+zokrates@0xxxxxxxxxxxx:~$ ~/zokrates compute-witness -a 3 9
+
+```
+
+## Deployment Info
+
+
+## OpenSea listing
 
 # Project Resources
 
