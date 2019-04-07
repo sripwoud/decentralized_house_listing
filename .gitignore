@@ -4,3 +4,6 @@ eth-contracts/nodes_modules/
 
 # Compiled binaries
 eth-contracts/build/
+
+# Secret files
+.*
