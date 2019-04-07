@@ -477,9 +477,9 @@ contract ERC721Enumerable is ERC165, ERC721 {
 
 contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     // visibility set as public to avoid having to define getters
-    string public name;
-    string public symbol;
-    string public baseTokenURI;
+    string private _name;
+    string private _symbol;
+    string private _baseTokenURI;
 
     // TODO: create private mapping of tokenId's to token uri's called '_tokenURIs'
     mapping(uint => string) private _tokenURIs;
@@ -492,12 +492,27 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
      *     bytes4(keccak256('tokenURI(uint256)'))
      */
 
-    constructor (string memory n, string memory s, string memory bTU) public {
-        name = n;
-        symbol = s;
-        baseTokenURI = bTU;
+    constructor (string memory name, string memory symbol, string memory baseTokenURI) public {
+        _name = name;
+        _symbol = symbol;
+        _baseTokenURI = baseTokenURI;
 
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
+    }
+
+    function name() external view returns (string memory)
+    {
+        return _name;
+    }
+
+    function symbol() external view returns (string memory)
+    {
+        return _symbol;
+    }
+
+    function baseTokenURI() external view returns (string memory)
+    {
+        return _baseTokenURI;
     }
 
     function tokenURI(uint256 tokenId) public view returns (string memory) {
@@ -509,7 +524,7 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     function setTokenURI(uint tokenId) internal
     {
         require(_exists(tokenId), "Token does not exist");
-        _tokenURIs[tokenId] = strConcat(baseTokenURI, uint2str(tokenId));
+        _tokenURIs[tokenId] = strConcat(_baseTokenURI, uint2str(tokenId));
     }
 
 }
