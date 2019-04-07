@@ -1,0 +1,80 @@
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 7007875
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x6a8977ab7aa42f857e43405fa5ce59b096659158747338a473424141d944bc8a
+   > Blocks: 1            Seconds: 8
+   > contract address:    0xf8D5e802115e97b3745295275f9c8690f4354aB4
+   > account:             0x45517697E4fc823BE60a066EcCa8139Ce9C4659e
+   > balance:             8.156710874258085075
+   > gas used:            273098
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00546196 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 4168871)
+   > confirmation number: 2 (block: 4168872)
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.00546196 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Replacing 'Verifier'
+   --------------------
+   > transaction hash:    0xdb19bc2b8a3670da359bfca7de5c9423cdb54d1ee73005246c31ff256ae6dd77
+   > Blocks: 0            Seconds: 12
+   > contract address:    0xD294fB9e17901444a571E8b1e04992F3Bc4CaE5e
+   > account:             0x45517697E4fc823BE60a066EcCa8139Ce9C4659e
+   > balance:             8.120375714258085075
+   > gas used:            1774730
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0354946 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 4168875)
+   > confirmation number: 2 (block: 4168876)
+
+   Replacing 'SolnSquareVerifier'
+   ------------------------------
+   > transaction hash:    0xb763db3415a4159c98a4f3d52ec92299ecb7a3f5b814704e7aae193d2ce9a547
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x3cba03458005c8425Fc3B93755aA1B93535a85a8
+   > account:             0x45517697E4fc823BE60a066EcCa8139Ce9C4659e
+   > balance:             8.030074054258085075
+   > gas used:            4515083
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.09030166 ETH
+
+   Pausing for 2 confirmations...
+   ------------------------------
+   > confirmation number: 1 (block: 4168878)
+   > confirmation number: 2 (block: 4168879)
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.12579626 ETH
+
+
+Summary
+=======
+> Total deployments:   3
+> Final cost:          0.13125822 ETH
