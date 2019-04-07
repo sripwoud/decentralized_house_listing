@@ -4,6 +4,7 @@ pragma solidity 0.5.2;
 import "./Verifier.sol";
 import "./ERC721Mintable.sol";
 
+
 contract SolnSquareVerifier is DecentralizedHousingToken {
     Verifier verifierContract;
     struct Solution {
