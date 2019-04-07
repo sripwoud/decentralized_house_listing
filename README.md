@@ -28,14 +28,16 @@ truffle(develop)> test
 
 ## Zokrates proofs generation
 **Prerequesite**: [Docker](https://docs.docker.com/install/)
-
+At contract migration, 10 initial tokens are minted. For it to succeed, 10
+corresponding proofs are required. To automate the generation of 10 proofs, I wrote
+the [script.sh](./zokrates/code/square/generateProofs.sh) script. From the
+project root directory, execute it as follow:
 ```
+$ cd zokrates/code
+$ chmod +x generateProofs.sh
 $ docker run -v /path/to/project/root/directory/zokrates/code/:/home/zokrates/code -ti zokrates/zokrates /bin/bash
-zokrates@0xxxxxxxxxxxx:~$ cd code square
-zokrates@0xxxxxxxxxxxx:~$ ~/zokrates compile -i square.code
-zokrates@0xxxxxxxxxxxx:~$ ~/zokrates setup
-zokrates@0xxxxxxxxxxxx:~$ ~/zokrates compute-witness -a 3 9
-
+zokrates@0xxxxxxxxxxxx:~$ cd code/square
+zokrates@0xxxxxxxxxxxx:~$ ./generateProofs.sh
 ```
 
 ## Deployment Info
