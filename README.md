@@ -42,6 +42,10 @@ zokrates@0xxxxxxxxxxxx:~$ ./generateProofs.sh
 
 The proofs.json generated includes then the 10 proofs. It is read during migration to mint the tokens.
 
+## Contract Details
+- address: 0x3cba03458005c8425Fc3B93755aA1B93535a85a8
+- [EtherScan](https://rinkeby.etherscan.io/address/0x3cba03458005c8425Fc3B93755aA1B93535a85a8)
+
 ## OpenSea listing
 
 # Project Resources
