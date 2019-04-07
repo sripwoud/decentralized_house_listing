@@ -26,7 +26,7 @@ $ truffle develop
 truffle(develop)> test
 ```
 
-## Zokrates proofs generation
+## Zokrates proofs generation (Info)
 **Prerequesite**: [Docker](https://docs.docker.com/install/)
 At contract migration, 10 initial tokens are minted. For it to succeed, 10
 corresponding proofs are required. To automate the generation of 10 proofs, I wrote
@@ -47,14 +47,23 @@ The proofs.json generated includes then the 10 proofs. It is read during migrati
 - [EtherScan](https://rinkeby.etherscan.io/address/0x3cba03458005c8425Fc3B93755aA1B93535a85a8)
 
 ## OpenSea listing
+1. Go to [OpenSea rinkeby](https://rinkeby.opensea.io/)
+2. Load your migrated contract: `Develop > Live on Rinkeby`
+3. Sell your items! (Multiple metamask transactions will have to be confirmed or signed)
 
-# Project Resources
+**Token purchases:**
+- https://rinkeby.opensea.io/assets/0xa75b004d71398347f1e9af3bc526fef133db4353/5
+- https://rinkeby.opensea.io/assets/0xa75b004d71398347f1e9af3bc526fef133db4353/3
+- https://rinkeby.opensea.io/assets/0xa75b004d71398347f1e9af3bc526fef133db4353/2
+- https://rinkeby.opensea.io/assets/0xa75b004d71398347f1e9af3bc526fef133db4353/1
+- https://rinkeby.opensea.io/assets/0xa75b004d71398347f1e9af3bc526fef133db4353/0
 
-* [Remix - Solidity IDE](https://remix.ethereum.org/)
-* [Visual Studio Code](https://code.visualstudio.com/)
+
+## Project Resources
 * [Truffle Framework](https://truffleframework.com/)
 * [Ganache - One Click Blockchain](https://truffleframework.com/ganache)
 * [Open Zeppelin ](https://openzeppelin.org/)
 * [Interactive zero knowledge 3-colorability demonstration](http://web.mit.edu/~ezyang/Public/graph/svg.html)
 * [Docker](https://docs.docker.com/install/)
 * [ZoKrates](https://github.com/Zokrates/ZoKrates)
+* [OpenSea](https://opensea.io/): The largest marketplace for crypto collectibles
