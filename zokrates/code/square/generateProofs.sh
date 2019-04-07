@@ -1,4 +1,6 @@
 #!/bin/bash
+~/zokrates compile -i square.code
+~/zokrates setup
 echo "[" > proofs.json
 for ((i=1;i<=9;i++))
   do
