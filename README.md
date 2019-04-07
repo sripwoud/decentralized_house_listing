@@ -40,8 +40,7 @@ zokrates@0xxxxxxxxxxxx:~$ cd code/square
 zokrates@0xxxxxxxxxxxx:~$ ./generateProofs.sh
 ```
 
-## Deployment Info
-
+The proofs.json generated includes then the 10 proofs. It is read during migration to mint the tokens.
 
 ## OpenSea listing
 
