@@ -44,7 +44,7 @@ contract('SolnSquareVerifier', accounts => {
 
   // Test if an ERC721 token can be minted for contract - SolnSquareVerifier
   it('Can mint token', async () => {
-    const tx = await this.contract.mintNewToken.call(
+    const tx = await this.contract.mintNewToken(
       accounts[1],
       2,
       proof.A,
@@ -59,5 +59,16 @@ contract('SolnSquareVerifier', accounts => {
       { from: accounts[0] }
     )
     assert(tx, 'No token minted')
+
+    truffleAssert.eventEmitted(
+      tx,
+      'Transfer',
+      ev => {
+        return ev.from === accounts[0] &
+        ev.to === accounts[1] &
+        +ev.tokenId == 2
+      },
+      'Transfer event should have been emitted'
+    )
   })
 })
